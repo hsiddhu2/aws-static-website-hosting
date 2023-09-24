@@ -1,24 +1,138 @@
-<html>
-    <title>hpythonn.com</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Website Hosting on AWS</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Static Website Hosting on AWS</h1>
+        <h3> <a class="href" href="https://medium.com/aws-in-plain-english/static-website-hosting-on-aws-s3-advanced-level-fa32b534e7f6" target="_blank" color="orange">For complete step-by-step implementation details, read the article here</a></h3>
 
-    <body>
-        <script src="script.js"></script>
+    </header>
 
-        <div class="bgimg">
-            <div class="topleft">
-                <p>HPYTHONN.COM</p>
-            </div>
-            <div class="middle">
-                <h3>Static Website Hosted on AWS S3 and served through CloudFront Globally.</h3>
-                <p>Follow steps here to host such website - <a href="http://www.medium.com/@freecloudlabs" target="_blank">Click Here</a></p>
-                <hr>
-                <p id="demo" style="font-size:30px"></p>
-            </div>
-            <div class="bottomleft">
-                <p> <a href="http://www.medium.com/@freecloudlabs" target="_blank">Medium.com Blog</a>
-                </p>
-            </div>
-        </div>
-    </body>
+    <nav>
+        <ul>
+            <li><a href="#step1">Step 1</a></li>
+            <li><a href="#step2">Step 2</a></li>
+            <li><a href="#step3">Step 3</a></li>
+            <li><a href="#step4">Step 4</a></li>
+            <li><a href="#step5">Step 5</a></li>
+            <li><a href="#step6">Step 6</a></li>
+            <li><a href="#step7">Step 7</a></li>
+            <li><a href="#step8">Step 8</a></li>
+            <li><a href="#step9">Step 9</a></li>
+            <li><a href="#step10">Step 10</a></li>
+            <li><a href="#step11">Step 11</a></li>
+            <li><a href="#step12">Step 12</a></li>
+            <li><a href="#step13">Step 13</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="step" id="step1">
+            <h2>1. Purchase a Domain Name or Use an existing domain:</h2>
+            <p>You can either purchase a new domain through services like AWS Route 53 or use an existing domain you already own.</p>
+        </section>
+
+        <section class="step" id="step2">
+            <h2>2. Create a Public Hosted Zone (Optional — External Domains):</h2>
+            <p>If you purchased a new domain through AWS Route 53, it will create a hosted zone automatically. If you're using an external domain registrar, you'll need to create a public hosted zone in AWS Route 53 manually and configure the domain's DNS settings to use Route 53's name servers.</p>
+        </section>
+
+        <section class="step" id="step3">
+            <h2>3. Create S3 Buckets for the root domain and the sub-domain:</h2>
+            <p>
+                - Log in to the AWS Management Console.<br>
+                - Go to the S3 service.<br>
+                - Create two S3 buckets: one for the root domain (e.g., example.com) and one for the sub-domain (e.g., www.example.com). Make sure to name them accordingly.
+            </p>
+        </section>
+
+        <section class="step" id="step4">
+            <h2>4. Upload Website Content to Sub-domain S3 Bucket:</h2>
+            <p>Upload your HTML, CSS, and other website files to the sub-domain S3 bucket. Ensure that these files are publicly accessible.</p>
+        </section>
+
+        <section class="step" id="step5">
+            <h2>5. Set up Root Domain for Website Redirect:</h2>
+            <p>Configure the root domain S3 bucket to redirect requests to your sub-domain (e.g., www.example.com).</p>
+        </section>
+
+        <section class="step" id="step6">
+            <h2>6. Request a Public Certificate from ACM (AWS Certificate Manager):</h2>
+            <p>
+                - Go to the ACM service in the AWS Management Console.<br>
+                - Request a public SSL/TLS certificate for your domain (e.g., *.example.com).
+            </p>
+        </section>
+
+        <section class="step" id="step7">
+            <h2>7. Set up CloudFront Distribution for Sub Domain:</h2>
+            <p>
+                - Go to the CloudFront service in the AWS Management Console.<br>
+                - Create a new CloudFront distribution for your sub-domain S3 bucket.<br>
+                - Configure the distribution to use the ACM certificate you requested in step 6.<br>
+                - Set the "Alternate Domain Names (CNAMEs)" to your sub-domain (e.g., www.example.com).<br>
+                - Configure other settings as needed, such as caching and security.
+            </p>
+        </section>
+
+        <section class="step" id="step8">
+            <h2>8. Set up CloudFront Distribution for Root Domain:</h2>
+            <p>
+                - Create another CloudFront distribution for your root domain.<br>
+                - Configure it to redirect all requests to your sub-domain using the CloudFront distribution created in step 7.
+            </p>
+        </section>
+
+        <section class="step" id="step9">
+            <h2>9. Route DNS traffic for your domain to your CloudFront distribution (Route 53 or External DNS Provider):</h2>
+            <p>
+                - If you're using Route 53 for DNS, update the DNS records for your domain to point to the CloudFront distributions created in steps 7 and 8.<br>
+                - If you're using an external DNS provider, update your DNS settings there to point to the CloudFront distributions' domain names (provided by AWS).
+            </p>
+        </section>
+
+        <section class="step" id="step10">
+            <h2>10. Testing Website Root & Sub-Domain:</h2>
+            <p>
+                - Wait for DNS changes to propagate (this may take some time).<br>
+                - Test your website by accessing both the root domain (e.g., example.com) and the sub-domain (e.g., www.example.com) in a web browser. Ensure that both URLs load your website correctly via CloudFront.
+            </p>
+        </section>
+
+        <section class="step" id="step11">
+            <h2>11. Creating a CodePipeline for CI/CD (Optional):</h2>
+            <p>
+                - If you want to set up continuous integration and deployment (CI/CD), create an AWS CodePipeline.<br>
+                - Configure the pipeline to deploy changes to your S3 buckets and invalidate the CloudFront cache when updates are made to your website content.
+            </p>
+        </section>
+
+        <section class="step" id="step12">
+            <h2>12. Testing the CodePipeline (Optional):</h2>
+            <p>
+                - Push changes to your source code repository and ensure that the CodePipeline deploys them to your S3 buckets and updates your website.
+            </p>
+        </section>
+
+        <section class="step" id="step13">
+            <h2>13. Clean Up:</h2>
+            <p>
+                - When you're done testing and no longer need the resources, make sure to clean up by deleting the CloudFront distributions, S3 buckets, ACM certificate (if not in use elsewhere), and any other AWS resources you created for this setup.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2023 hpython.com</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
